@@ -3,7 +3,6 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tzdata;
 
 class TimeLocationService {
-  // Initialize tz database once and cache commonly used locations
   bool _tzInitialized = false;
   final Map<String, tz.Location> _cachedLocations = {};
 
@@ -28,7 +27,6 @@ class TimeLocationService {
     }
 
     try {
-      // Menambahkan timeout untuk menghindari freeze
       return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium,
         timeLimit: const Duration(seconds: 15),
@@ -43,10 +41,8 @@ class TimeLocationService {
     String targetTimeZone,
   ) {
     try {
-      // Pastikan timezone data sudah diinisialisasi
       if (!_tzInitialized) initializeTimezones();
 
-      // Parse dengan DateTime.parse dari UTC string lalu konversi menggunakan tz
       final utc = DateTime.parse(londonDateTimeString).toUtc();
 
       final londonLoc = _cachedLocations.putIfAbsent(
