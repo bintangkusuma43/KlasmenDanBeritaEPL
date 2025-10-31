@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // Wajib untuk ikon SVG
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'home_screen.dart';
 import 'standings_screen.dart';
@@ -17,12 +17,10 @@ class MainWrapper extends StatefulWidget {
 class _MainWrapperState extends State<MainWrapper> {
   int _selectedIndex = 0;
 
-  // FIX: Hanya 5 menu setelah menghapus Hasil Pertandingan
-  // Gunakan lazy loading untuk screens
   late final List<Widget> _screens = [
     const HomeScreen(),
     const StandingsScreen(),
-    const MatchesScreen(), // Jadwal (Hanya satu screen)
+    const MatchesScreen(),
     const TransfersScreen(),
     const ProfileScreen(),
   ];
@@ -36,21 +34,17 @@ class _MainWrapperState extends State<MainWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Menggunakan IndexedStack untuk menjaga state layar
       body: IndexedStack(index: _selectedIndex, children: _screens),
-      
-      // Menggunakan BottomAppBar sesuai keinginan Anda
+
       bottomNavigationBar: BottomAppBar(
-        color: Colors.black, // Background hitam solid
+        color: Colors.black,
         elevation: 8.0,
         child: SafeArea(
           child: SizedBox(
             height: 60,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // FIX: List.generate hanya untuk 5 menu (_screens.length)
               children: List.generate(_screens.length, (index) {
-                // FIX: Menyesuaikan labels dan icons menjadi 5 item
                 final labels = [
                   'Beranda',
                   'Klasemen',
@@ -58,12 +52,11 @@ class _MainWrapperState extends State<MainWrapper> {
                   'Transfer',
                   'Profil',
                 ];
-                
-                // Catatan: Anda harus memastikan semua file SVG ini ada di folder assets/icons/
+
                 final icons = [
                   'assets/icons/home.svg',
                   'assets/icons/standings.svg',
-                  'assets/icons/event.svg', // Mengganti ikon Hasil menjadi Jadwal
+                  'assets/icons/event.svg',
                   'assets/icons/swap.svg',
                   'assets/icons/profile.svg',
                 ];
@@ -76,7 +69,6 @@ class _MainWrapperState extends State<MainWrapper> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Menggunakan SvgPicture.asset
                         SvgPicture.asset(
                           icons[index],
                           width: 20,
@@ -86,7 +78,6 @@ class _MainWrapperState extends State<MainWrapper> {
                             BlendMode.srcIn,
                           ),
                           semanticsLabel: labels[index],
-                          // Placeholder wajib jika SVG gagal dimuat
                           placeholderBuilder: (context) => Icon(
                             Icons.circle,
                             size: 18,
