@@ -7,17 +7,14 @@ import '../models/news_model.dart';
 import '../models/standing_model.dart';
 
 class ApiService {
-  // API Key dan Host dari rancangan PDF
   static const String _apiSportsKey = "31651087a18efa3f76091600cb87e205";
   static const String _apiSportsHost = "v3.football.api-sports.io";
 
   Map<String, String> get _apiHeaders => {
     'x-apisports-key': _apiSportsKey,
-    // include host header in case some environments require it
     'x-apisports-host': _apiSportsHost,
   };
 
-  // --- 1. Klasemen Liga Inggris ---
   Future<List<StandingModel>> fetchStandings({
     String leagueId = '39',
     String season = '2023',
@@ -28,7 +25,6 @@ class ApiService {
 
     debugPrint('Fetching standings from: $url');
 
-    // Make sure headers contain API key
     final headers = Map<String, String>.from(_apiHeaders);
     if (headers['x-apisports-key'] == null ||
         headers['x-apisports-key']!.isEmpty) {
@@ -52,13 +48,6 @@ class ApiService {
       final data = json.decode(response.body);
       debugPrint('Standings API response decoded successfully');
 
-      // Log the full response for debugging
-      debugPrint('Full response data type: ${data.runtimeType}');
-      if (data is Map) {
-        debugPrint('Response keys: ${data.keys.join(", ")}');
-      }
-
-      // Parse according to API structure: response[0].league.standings[0]
       if (data is! Map) {
         debugPrint('Standings: Response is not a Map');
         return [];
@@ -88,7 +77,6 @@ class ApiService {
 
       debugPrint('First item keys: ${firstItem.keys.join(", ")}');
 
-      // The correct path based on your API: response[0].league.standings[0]
       if (firstItem.containsKey('league') && firstItem['league'] is Map) {
         final league = firstItem['league'] as Map;
         debugPrint('League keys: ${league.keys.join(", ")}');
@@ -148,8 +136,6 @@ class ApiService {
     }
   }
 
-  /// Fetch raw standings response (decoded JSON) for debugging purposes.
-  /// Returns a map with keys: 'status' (int) and 'body' (decoded JSON) or null on error.
   Future<Map<String, dynamic>?> fetchStandingsRaw({
     String leagueId = '39',
     String season = '2023',
@@ -178,7 +164,6 @@ class ApiService {
     }
   }
 
-  // --- 2. Berita (DATA STATIS / NON-API) ---
   Future<List<NewsModel>> fetchNews() async {
     final rawData = [
       {
@@ -213,7 +198,6 @@ class ApiService {
     return rawData.map((data) => NewsModel.fromJson(data)).toList();
   }
 
-  // --- 3. Pertandingan (DATA STATIS) ---
   Future<List<MatchModel>> fetchStaticMatches() async {
     return [
       MatchModel(
@@ -309,14 +293,11 @@ class ApiService {
     ];
   }
 
-  // --- 4. Transfer (Support fetch by player ID, e.g. Peter Crouch) ---
   Future<List<TransferModel>> fetchTransfers() async {
-    // Hardcoded for Peter Crouch (playerId=18928)
     final url = Uri.parse('https://$_apiSportsHost/transfers?player=18928');
 
     debugPrint('Fetching transfers from: $url');
 
-    // ensure headers contain API key
     final headers = Map<String, String>.from(_apiHeaders);
     if (headers['x-apisports-key'] == null ||
         headers['x-apisports-key']!.isEmpty) {
@@ -340,7 +321,6 @@ class ApiService {
       final data = json.decode(response.body);
       debugPrint('Transfers API response decoded successfully');
 
-      // Parse according to API structure: response[0].transfers
       if (data is! Map || data['response'] is! List) {
         debugPrint('Transfers: Invalid response structure');
         return [];
@@ -354,20 +334,17 @@ class ApiService {
 
       final List<TransferModel> transferList = [];
 
-      // Iterate over response entries (should be just one for a specific player)
       for (final playerObj in responseList) {
         if (playerObj is! Map) {
           debugPrint('Transfers: playerObj is not a Map');
           continue;
         }
 
-        // Get player name
         final playerName =
             (playerObj['player'] is Map && playerObj['player']['name'] != null)
             ? playerObj['player']['name'] as String
             : 'P. Crouch';
 
-        // Get transfers array
         final transfers = (playerObj['transfers'] is List)
             ? (playerObj['transfers'] as List)
             : [];
