@@ -1,5 +1,3 @@
-// lib/screens/home_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/news_model.dart';
@@ -17,9 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<NewsModel> _newsList = [];
   bool _isLoading = true;
 
-  // Inisialisasi final service instances di dalam State class
   final ApiService _apiService = ApiService();
-  // Use singleton instance instead of creating new one
   final NotificationService _notificationService = NotificationService();
 
   @override
@@ -37,20 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
       final rawData = await _apiService.fetchNews();
 
       if (rawData.isNotEmpty) {
-        _newsList =
-            rawData; // Karena fetchNews sudah mengembalikan List<NewsModel>
+        _newsList = rawData;
 
-        // Pemicu Notifikasi (Kriteria Wajib) - FIX: Argumen ID dimasukkan
-        // Call notification without await to prevent blocking
         _notificationService
             .showNotification(
-              10, // ID Notifikasi
+              10,
               '🚨 Berita Terbaru Liga Inggris!',
               'Ada ${_newsList.length} artikel baru menanti Anda. Cek sekarang.',
             )
-            .catchError((e) {
-              // Silently ignore notification errors
-            });
+            .catchError((e) {});
       } else {
         _newsList = [];
       }
@@ -58,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint("Error fetching news: $e");
       _newsList = [];
     } finally {
-      // Avoid returning inside finally; only set state when mounted
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -102,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Tampilkan gambar jika ada, jika tidak tampilkan placeholder
                         news.imageUrl != null && news.imageUrl!.isNotEmpty
                             ? (news.imageUrl!.startsWith('assets/')
                                   ? Image.asset(
