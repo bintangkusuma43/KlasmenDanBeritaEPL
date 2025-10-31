@@ -5,7 +5,6 @@ import '../services/api_service.dart';
 import '../services/time_location_service.dart';
 
 class MatchesScreen extends StatefulWidget {
-  // Property isNextMatch dihapus sesuai finalisasi proyek
   const MatchesScreen({super.key});
 
   @override
@@ -46,7 +45,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       // Run location detection in background without blocking
       _currentLocation = await _timeService.getCurrentLocation();
 
-      // FIX UTAMA: Tentukan zona waktu berdasarkan koordinat LBS
+      // Tentukan zona waktu berdasarkan koordinat LBS
       if (_currentLocation != null) {
         // LOGIC SIMULASI DETEKSI KOORDINAT KE ZONA WAKTU (LBS)
         // Ini adalah simulasi: Di aplikasi nyata, Anda memerlukan API Geocoding
