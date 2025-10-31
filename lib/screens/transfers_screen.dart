@@ -10,7 +10,6 @@ class TransfersScreen extends StatefulWidget {
 }
 
 class _TransfersScreenState extends State<TransfersScreen> {
-  // Helper for month name
   String _monthName(int month) {
     const months = [
       '',
@@ -46,7 +45,6 @@ class _TransfersScreenState extends State<TransfersScreen> {
     });
 
     try {
-      // Fetch transfer history for Peter Crouch (playerId=18928)
       _transferList = await _apiService.fetchTransfers();
     } catch (e) {
       debugPrint("Error fetching transfer data: $e");
@@ -93,7 +91,6 @@ class _TransfersScreenState extends State<TransfersScreen> {
                     itemCount: _transferList.length,
                     itemBuilder: (context, index) {
                       final transfer = _transferList[index];
-                      // Format date (e.g., 2019-01-31 -> 31 Jan 2019)
                       String formattedDate = '';
                       try {
                         final date = DateTime.parse(transfer.transferDate);
@@ -117,7 +114,6 @@ class _TransfersScreenState extends State<TransfersScreen> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Player icon/initial
                                   Container(
                                     width: 38,
                                     height: 38,
@@ -156,7 +152,6 @@ class _TransfersScreenState extends State<TransfersScreen> {
                                       ],
                                     ),
                                   ),
-                                  // Date at top right
                                   Text(
                                     formattedDate,
                                     style: const TextStyle(
@@ -171,7 +166,6 @@ class _TransfersScreenState extends State<TransfersScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // Out team logo and name
                                   Column(
                                     children: [
                                       ClipOval(
@@ -209,7 +203,6 @@ class _TransfersScreenState extends State<TransfersScreen> {
                                     color: Colors.amber,
                                   ),
                                   const SizedBox(width: 18),
-                                  // In team logo and name
                                   Column(
                                     children: [
                                       ClipOval(
@@ -255,7 +248,6 @@ class _TransfersScreenState extends State<TransfersScreen> {
   }
 }
 
-// --- WIDGET KONVERTER MATA UANG BEBAS (Wajib ada di file ini) ---
 class CurrencyConverterWidget extends StatefulWidget {
   const CurrencyConverterWidget({super.key});
 
@@ -286,7 +278,6 @@ class _CurrencyConverterWidgetState extends State<CurrencyConverterWidget> {
       final double rateSource = _rates[_sourceCurrency]!;
       final double rateTarget = _rates[_targetCurrency]!;
 
-      // Konversi: Jumlah / RateSource * RateTarget
       final double amountInEUR = amount / rateSource;
       final double convertedAmount = amountInEUR * rateTarget;
 
@@ -330,7 +321,6 @@ class _CurrencyConverterWidgetState extends State<CurrencyConverterWidget> {
               ),
               const SizedBox(width: 10),
 
-              // Source Currency Dropdown
               DropdownButton<String>(
                 value: _sourceCurrency,
                 items: _currencies.map((String value) {
@@ -349,7 +339,6 @@ class _CurrencyConverterWidgetState extends State<CurrencyConverterWidget> {
           ),
           const SizedBox(height: 10),
 
-          // Target Currency & Convert Button
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -373,7 +362,6 @@ class _CurrencyConverterWidgetState extends State<CurrencyConverterWidget> {
           ),
           const SizedBox(height: 15),
 
-          // Hasil Konversi
           Text(
             'Result: $_conversionResult',
             style: const TextStyle(
