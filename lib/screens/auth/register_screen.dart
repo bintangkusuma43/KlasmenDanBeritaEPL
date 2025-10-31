@@ -104,14 +104,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_formKey.currentState!.validate()) {
       final String email = _emailController.text.trim();
       final String hashedPassword = hashPassword(_passwordController.text);
+
       if (_selectedTeam == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Pilih tim jagoan terlebih dahulu')),
         );
         return;
       }
+
+      debugPrint('Register: Checking if user exists for email: $email');
+      if (_hiveService.getUserByEmail(email) != null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Registrasi Gagal. Email sudah terdaftar.'),
+          ),
+        );
+        return;
+      }
+
       String? savedImagePath;
-      if (_profilePhotoFile != null) {
+      if (_profilePhotoFile != null || _profilePhotoBytes != null) {
         savedImagePath = await _saveImageToLocal();
         if (savedImagePath == null) {
           if (!mounted) return;
@@ -121,6 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           return;
         }
       }
+
       final newUser = UserModel(
         id: null,
         nama: _nameController.text,
@@ -132,41 +146,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ? _feedbackController.text
             : null,
       );
+
       try {
-        debugPrint('Register: Checking if user exists for email: $email');
-        if (_hiveService.getUserByEmail(newUser.email) != null) {
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Registrasi Gagal. Email sudah terdaftar.'),
-            ),
-          );
-          return;
-        }
-        debugPrint('Register: Inserting user: \\${newUser.toJson()}');
+        debugPrint('Register: Inserting user: ${newUser.toJson()}');
         await _hiveService
             .insertUser(newUser)
             .timeout(const Duration(seconds: 10));
-        debugPrint('Register: User inserted. Checking again...');
-        if (_hiveService.getUserByEmail(newUser.email) != null) {
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Registrasi Berhasil! Silakan Login.'),
-            ),
-          );
-          Navigator.pop(context); // Kembali ke LoginScreen
-        } else {
-          debugPrint('Register: User not found after insert!');
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Registrasi gagal. User tidak ditemukan setelah insert.',
-              ),
-            ),
-          );
-        }
+
+        debugPrint('Register: User inserted successfully');
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registrasi Berhasil! Silakan Login.')),
+        );
+        Navigator.pop(context);
       } catch (e, st) {
         debugPrint('Register: Error during registration: $e\n$st');
         if (!mounted) return;
