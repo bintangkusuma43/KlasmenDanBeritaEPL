@@ -6,6 +6,7 @@ import '../models/user_model.dart';
 import '../database/hive_service.dart';
 import '../utils/session_utils.dart';
 import 'auth/login_screen.dart';
+import 'goalkeeper_game_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -68,12 +69,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   '📝 Kesan:',
                   style: TextStyle(
                     color: Colors.yellow,
@@ -81,8 +82,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: 8),
+                Text(
                   'Terima kasih Pak Bagus, berkat tugas dari bapak saya semakin rajin untuk berdoa dan beribadah. Izinkan saya mengucapkan kata-kata keramat "Segampang itu"',
                   style: TextStyle(
                     color: Colors.white70,
@@ -90,8 +91,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 1.5,
                   ),
                 ),
-                const SizedBox(height: 16),
-                const Text(
+                SizedBox(height: 16),
+                Text(
                   '💡 Saran:',
                   style: TextStyle(
                     color: Colors.yellow,
@@ -99,8 +100,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: 8),
+                Text(
                   'Saran saya ganti kata-kata "segampang itu" menjadi "semumet itu". Maaf jika aplikasi saya tidak bagus, karna saya Tatang bukan Bagus',
                   style: TextStyle(
                     color: Colors.white70,
@@ -289,27 +290,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(height: 12),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: ElevatedButton.icon(
-                              onPressed: () => _showKesanSaranDialog(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.yellow,
-                                foregroundColor: Colors.black,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                  horizontal: 20,
+                            child: Column(
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const GoalkeeperGameScreen(),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green[700],
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                      horizontal: 20,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  icon: const Icon(Icons.sports_soccer),
+                                  label: const Text(
+                                    'Main Game Kiper! ⚽',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                const SizedBox(height: 12),
+                                ElevatedButton.icon(
+                                  onPressed: () =>
+                                      _showKesanSaranDialog(context),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.yellow,
+                                    foregroundColor: Colors.black,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                      horizontal: 20,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  icon: const Icon(Icons.feedback),
+                                  label: const Text(
+                                    'Lihat Kesan & Saran',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              icon: const Icon(Icons.feedback),
-                              label: const Text(
-                                'Lihat Kesan & Saran',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 24),

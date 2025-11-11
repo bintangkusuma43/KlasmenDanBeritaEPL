@@ -166,7 +166,8 @@ class _StandingsScreenState extends State<StandingsScreen> {
                     ),
                   );
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  if (_searchController.text.isNotEmpty && _filteredStandings.isEmpty) {
+                  if (_searchController.text.isNotEmpty &&
+                      _filteredStandings.isEmpty) {
                     return const Center(
                       child: Text(
                         'Tim tidak ditemukan',
