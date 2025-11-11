@@ -166,19 +166,20 @@ class _StandingsScreenState extends State<StandingsScreen> {
                     ),
                   );
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  return _filteredStandings.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'Tim tidak ditemukan',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        )
-                      : SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: SingleChildScrollView(
-                            child: _buildStandingsTable(_filteredStandings),
-                          ),
-                        );
+                  if (_searchController.text.isNotEmpty && _filteredStandings.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Tim tidak ditemukan',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  }
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      child: _buildStandingsTable(_filteredStandings),
+                    ),
+                  );
                 } else {
                   return const Center(
                     child: Text('Tidak ada data klasemen yang tersedia.'),
