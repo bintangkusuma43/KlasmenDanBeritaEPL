@@ -13,11 +13,35 @@ class StandingsScreen extends StatefulWidget {
 class _StandingsScreenState extends State<StandingsScreen> {
   late Future<List<StandingModel>> _standingsFuture;
   final ApiService _apiService = ApiService();
+  final TextEditingController _searchController = TextEditingController();
+  List<StandingModel> _allStandings = [];
+  List<StandingModel> _filteredStandings = [];
 
   @override
   void initState() {
     super.initState();
     _standingsFuture = _fetchData();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterStandings(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredStandings = _allStandings;
+      } else {
+        _filteredStandings = _allStandings
+            .where(
+              (standing) =>
+                  standing.teamName.toLowerCase().contains(query.toLowerCase()),
+            )
+            .toList();
+      }
+    });
   }
 
   Future<void> _showRawResponseDebug(BuildContext context) async {
@@ -70,7 +94,8 @@ class _StandingsScreenState extends State<StandingsScreen> {
 
   Future<List<StandingModel>> _fetchData() async {
     final rawData = await _apiService.fetchStandings();
-
+    _allStandings = rawData;
+    _filteredStandings = rawData;
     return rawData;
   }
 
@@ -87,34 +112,82 @@ class _StandingsScreenState extends State<StandingsScreen> {
           ),
         ],
       ),
-      body: FutureBuilder<List<StandingModel>>(
-        future: _standingsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  'Error: ${snapshot.error}. Cek koneksi atau API Key Anda.',
-                  textAlign: TextAlign.center,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              controller: _searchController,
+              onChanged: _filterStandings,
+              decoration: InputDecoration(
+                hintText: 'Cari tim...',
+                prefixIcon: const Icon(Icons.search, color: Colors.yellow),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _searchController.clear();
+                          _filterStandings('');
+                        },
+                      )
+                    : null,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Colors.yellow),
                 ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Colors.yellow, width: 2),
+                ),
+                filled: true,
+                fillColor: Colors.grey[900],
               ),
-            );
-          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                child: _buildStandingsTable(snapshot.data!),
-              ),
-            );
-          } else {
-            return const Center(
-              child: Text('Tidak ada data klasemen yang tersedia.'),
-            );
-          }
-        },
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<StandingModel>>(
+              future: _standingsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        'Error: ${snapshot.error}. Cek koneksi atau API Key Anda.',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  return _filteredStandings.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'Tim tidak ditemukan',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        )
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SingleChildScrollView(
+                            child: _buildStandingsTable(_filteredStandings),
+                          ),
+                        );
+                } else {
+                  return const Center(
+                    child: Text('Tidak ada data klasemen yang tersedia.'),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
