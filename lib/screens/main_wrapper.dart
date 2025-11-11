@@ -36,15 +36,18 @@ class _MainWrapperState extends State<MainWrapper> {
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: _screens),
       extendBody: true,
+      // BOTTOM NAVIGATION BAR - Menu navigasi bawah
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
+          // WARNA BACKGROUND BOTTOM NAV: Gradient hitam gelap
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
+            colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)], // Hitam gelap
           ),
           boxShadow: [
             BoxShadow(
+              // WARNA SHADOW BOTTOM NAV: Hitam
               color: Colors.black.withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, -5),
@@ -87,15 +90,20 @@ class _MainWrapperState extends State<MainWrapper> {
                         horizontal: 4,
                       ),
                       decoration: BoxDecoration(
+                        // WARNA MENU AKTIF: Gradient kuning-oranye (dipilih)
                         gradient: selected
                             ? const LinearGradient(
-                                colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                                colors: [
+                                  Color(0xFFFFD700),
+                                  Color(0xFFFFA500),
+                                ], // Kuning -> Oranye
                               )
-                            : null,
+                            : null, // Menu tidak aktif: transparan
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: selected
                             ? [
                                 BoxShadow(
+                                  // WARNA SHADOW MENU AKTIF: Kuning glow
                                   color: Colors.yellow.withValues(alpha: 0.4),
                                   blurRadius: 8,
                                   spreadRadius: 1,
@@ -112,6 +120,7 @@ class _MainWrapperState extends State<MainWrapper> {
                             width: selected ? 24 : 22,
                             height: selected ? 24 : 22,
                             colorFilter: ColorFilter.mode(
+                              // WARNA ICON MENU: Hitam (aktif), Putih 70% (tidak aktif)
                               selected ? Colors.black : Colors.white70,
                               BlendMode.srcIn,
                             ),
@@ -119,6 +128,7 @@ class _MainWrapperState extends State<MainWrapper> {
                             placeholderBuilder: (context) => Icon(
                               Icons.circle,
                               size: selected ? 22 : 20,
+                              // WARNA ICON FALLBACK: Hitam (aktif), Putih 70% (tidak aktif)
                               color: selected ? Colors.black : Colors.white70,
                             ),
                           ),
@@ -130,6 +140,7 @@ class _MainWrapperState extends State<MainWrapper> {
                               fontWeight: selected
                                   ? FontWeight.bold
                                   : FontWeight.normal,
+                              // WARNA TEXT MENU: Hitam (aktif), Putih 70% (tidak aktif)
                               color: selected ? Colors.black : Colors.white70,
                             ),
                           ),

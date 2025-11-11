@@ -363,7 +363,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.yellow.withValues(alpha: 0.3),
+                                          color: Colors.yellow.withValues(
+                                            alpha: 0.3,
+                                          ),
                                           blurRadius: 8,
                                           spreadRadius: 2,
                                         ),
@@ -399,19 +401,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               child: Column(
                                 children: [
+                                  // TOMBOL GAME KIPER - Hijau
                                   Container(
                                     width: double.infinity,
                                     decoration: BoxDecoration(
+                                      // WARNA TOMBOL GAME: Gradient hijau muda ke terang
                                       gradient: const LinearGradient(
                                         colors: [
-                                          Color(0xFF00C853),
-                                          Color(0xFF00E676),
+                                          Color(0xFF00C853), // Hijau tua
+                                          Color(0xFF00E676), // Hijau terang
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(15),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.green.withValues(alpha: 0.4),
+                                          // WARNA SHADOW TOMBOL GAME: Hijau glow
+                                          color: Colors.green.withValues(
+                                            alpha: 0.4,
+                                          ),
                                           blurRadius: 12,
                                           offset: const Offset(0, 4),
                                         ),
@@ -429,6 +436,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.transparent,
+                                        // WARNA TEXT & ICON TOMBOL GAME: Putih
                                         foregroundColor: Colors.white,
                                         shadowColor: Colors.transparent,
                                         padding: const EdgeInsets.symmetric(
@@ -456,19 +464,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ),
                                   const SizedBox(height: 14),
+                                  // TOMBOL KESAN & SARAN - Kuning
                                   Container(
                                     width: double.infinity,
                                     decoration: BoxDecoration(
+                                      // WARNA TOMBOL KESAN & SARAN: Gradient kuning ke oranye
                                       gradient: const LinearGradient(
                                         colors: [
-                                          Color(0xFFFFD700),
-                                          Color(0xFFFFA500),
+                                          Color(0xFFFFD700), // Kuning emas
+                                          Color(0xFFFFA500), // Oranye
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(15),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.yellow.withValues(alpha: 0.4),
+                                          // WARNA SHADOW TOMBOL: Kuning glow
+                                          color: Colors.yellow.withValues(
+                                            alpha: 0.4,
+                                          ),
                                           blurRadius: 12,
                                           offset: const Offset(0, 4),
                                         ),
@@ -479,6 +492,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           _showKesanSaranDialog(context),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.transparent,
+                                        // WARNA TEXT & ICON TOMBOL: Hitam
                                         foregroundColor: Colors.black,
                                         shadowColor: Colors.transparent,
                                         padding: const EdgeInsets.symmetric(
@@ -509,17 +523,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             const SizedBox(height: 30),
+                            // TOMBOL LOGOUT - Merah
                             Container(
                               decoration: BoxDecoration(
+                                // WARNA TOMBOL LOGOUT: Gradient merah terang ke gelap
                                 gradient: const LinearGradient(
                                   colors: [
-                                    Color(0xFFFF1744),
-                                    Color(0xFFD50000),
+                                    Color(0xFFFF1744), // Merah terang
+                                    Color(0xFFD50000), // Merah gelap
                                   ],
                                 ),
                                 borderRadius: BorderRadius.circular(30),
                                 boxShadow: [
                                   BoxShadow(
+                                    // WARNA SHADOW LOGOUT: Merah glow
                                     color: Colors.red.withValues(alpha: 0.4),
                                     blurRadius: 12,
                                     offset: const Offset(0, 4),
@@ -530,6 +547,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onPressed: _logout,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
+                                  // WARNA TEXT LOGOUT: Putih
                                   foregroundColor: Colors.white,
                                   shadowColor: Colors.transparent,
                                   padding: const EdgeInsets.symmetric(
