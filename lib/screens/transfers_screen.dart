@@ -86,6 +86,7 @@ class _TransfersScreenState extends State<TransfersScreen> {
           ),
         ),
         child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               const CurrencyConverterWidget(),
@@ -173,6 +174,7 @@ class _TransfersScreenState extends State<TransfersScreen> {
                   : ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
+                      padding: const EdgeInsets.only(bottom: 100),
                       itemCount: _transferList.length,
                       itemBuilder: (context, index) {
                         final transfer = _transferList[index];

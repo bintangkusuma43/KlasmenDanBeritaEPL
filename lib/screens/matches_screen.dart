@@ -153,7 +153,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 ),
               )
             : ListView.builder(
-                padding: const EdgeInsets.all(12),
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(
+                  left: 12,
+                  right: 12,
+                  top: 12,
+                  bottom: 100,
+                ),
                 itemCount: _matches.length,
                 itemBuilder: (context, index) {
                   final match = _matches[index];

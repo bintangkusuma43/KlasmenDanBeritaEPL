@@ -277,13 +277,10 @@ class _StandingsScreenState extends State<StandingsScreen> {
                         ),
                       );
                     }
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                    return SingleChildScrollView(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: SingleChildScrollView(
-                          child: _buildStandingsTable(_filteredStandings),
-                        ),
+                        child: _buildStandingsTable(_filteredStandings),
                       ),
                     );
                   } else {

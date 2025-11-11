@@ -131,9 +131,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 onRefresh: _fetchNewsData,
                 color: Colors.yellow,
                 child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                    right: 12,
+                    top: 12,
+                    bottom: 100,
                   ),
                   itemCount: _newsList.length,
                   itemBuilder: (context, index) {
