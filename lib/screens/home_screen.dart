@@ -72,126 +72,310 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Beranda & Berita Terkini')),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _newsList.isEmpty
-          ? const Center(
-              child: Text(
-                'Tidak ada berita yang ditemukan. Menggunakan data statis.',
-              ),
-            )
-          : ListView.builder(
-              itemCount: _newsList.length,
-              itemBuilder: (context, index) {
-                final news = _newsList[index];
-                return InkWell(
-                  onTap: () => _launchURL(news.url),
-                  child: Card(
-                    margin: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        news.imageUrl != null && news.imageUrl!.isNotEmpty
-                            ? (news.imageUrl!.startsWith('assets/')
-                                  ? Image.asset(
-                                      news.imageUrl!.replaceFirst(
-                                        RegExp(r'^/+'),
-                                        '',
-                                      ),
-                                      height: 180,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            debugPrint(
-                                              'Asset image load error: $error',
-                                            );
-                                            return Container(
-                                              height: 180,
-                                              color: Colors.grey[900],
-                                              child: const Center(
-                                                child: Icon(
-                                                  Icons.broken_image,
-                                                  size: 48,
-                                                  color: Colors.white54,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                    )
-                                  : Image.network(
-                                      news.imageUrl!,
-                                      height: 180,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            debugPrint(
-                                              'Image load error: $error',
-                                            );
-                                            return Container(
-                                              height: 180,
-                                              color: Colors.grey[900],
-                                              child: const Center(
-                                                child: Icon(
-                                                  Icons.broken_image,
-                                                  size: 48,
-                                                  color: Colors.white54,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                    ))
-                            : Container(
-                                height: 180,
-                                color: Colors.grey[900],
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.image,
-                                    size: 48,
-                                    color: Colors.white54,
-                                  ),
-                                ),
+      appBar: AppBar(
+        title: const Text(
+          'Beranda & Berita Terkini',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.grey[900]!, Colors.black],
+          ),
+        ),
+        child: _isLoading
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Memuat berita terkini...',
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
+                  ],
+                ),
+              )
+            : _newsList.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.newspaper, size: 80, color: Colors.white30),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Tidak ada berita yang ditemukan',
+                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                    ),
+                  ],
+                ),
+              )
+            : RefreshIndicator(
+                onRefresh: _fetchNewsData,
+                color: Colors.yellow,
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  itemCount: _newsList.length,
+                  itemBuilder: (context, index) {
+                    final news = _newsList[index];
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: InkWell(
+                        onTap: () => _launchURL(news.url),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Colors.grey[850]!, Colors.grey[900]!],
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                blurRadius: 10,
+                                offset: const Offset(0, 5),
                               ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
+                            ],
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.1),
+                              width: 1,
+                            ),
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                news.title,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
+                              Stack(
                                 children: [
-                                  const Icon(Icons.source, size: 14),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    news.sourceName,
-                                    style: const TextStyle(fontSize: 12),
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                    child:
+                                        news.imageUrl != null &&
+                                            news.imageUrl!.isNotEmpty
+                                        ? (news.imageUrl!.startsWith('assets/')
+                                              ? Image.asset(
+                                                  news.imageUrl!.replaceFirst(
+                                                    RegExp(r'^/+'),
+                                                    '',
+                                                  ),
+                                                  height: 200,
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder:
+                                                      (
+                                                        context,
+                                                        error,
+                                                        stackTrace,
+                                                      ) {
+                                                        return _buildPlaceholder();
+                                                      },
+                                                )
+                                              : Image.network(
+                                                  news.imageUrl!,
+                                                  height: 200,
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                  loadingBuilder:
+                                                      (
+                                                        context,
+                                                        child,
+                                                        progress,
+                                                      ) {
+                                                        if (progress == null) {
+                                                          return child;
+                                                        }
+                                                        return Container(
+                                                          height: 200,
+                                                          color:
+                                                              Colors.grey[900],
+                                                          child: const Center(
+                                                            child: CircularProgressIndicator(
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                    Color
+                                                                  >(
+                                                                    Colors
+                                                                        .yellow,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                  errorBuilder:
+                                                      (
+                                                        context,
+                                                        error,
+                                                        stackTrace,
+                                                      ) {
+                                                        return _buildPlaceholder();
+                                                      },
+                                                ))
+                                        : _buildPlaceholder(),
                                   ),
-                                  const Spacer(),
-                                  Text(
-                                    news.publishedAt.substring(0, 10),
-                                    style: const TextStyle(fontSize: 12),
+                                  Positioned(
+                                    top: 12,
+                                    right: 12,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 6,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.redAccent,
+                                            Colors.red,
+                                          ],
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.red.withOpacity(0.5),
+                                            blurRadius: 8,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                      child: const Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.newspaper,
+                                            color: Colors.white,
+                                            size: 14,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'Baca',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      news.title,
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        height: 1.3,
+                                      ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(6),
+                                            decoration: BoxDecoration(
+                                              color: Colors.yellow,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: const Icon(
+                                              Icons.source,
+                                              size: 16,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              news.sourceName,
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.white70,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Icon(
+                                            Icons.access_time,
+                                            size: 14,
+                                            color: Colors.yellow,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            news.publishedAt.substring(0, 10),
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white60,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholder() {
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.grey[800]!, Colors.grey[900]!],
+        ),
+      ),
+      child: const Center(
+        child: Icon(Icons.newspaper, size: 60, color: Colors.white30),
+      ),
     );
   }
 }

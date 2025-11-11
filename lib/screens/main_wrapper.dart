@@ -35,13 +35,25 @@ class _MainWrapperState extends State<MainWrapper> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: _screens),
-
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
-        elevation: 8.0,
+      extendBody: true,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
         child: SafeArea(
-          child: SizedBox(
-            height: 60,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(_screens.length, (index) {
@@ -66,33 +78,63 @@ class _MainWrapperState extends State<MainWrapper> {
                 return Expanded(
                   child: InkWell(
                     onTap: () => _onItemTapped(index),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          icons[index],
-                          width: 20,
-                          height: 20,
-                          colorFilter: ColorFilter.mode(
-                            selected ? Colors.yellow : Colors.white70,
-                            BlendMode.srcIn,
+                    borderRadius: BorderRadius.circular(15),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: selected
+                            ? const LinearGradient(
+                                colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                              )
+                            : null,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: selected
+                            ? [
+                                BoxShadow(
+                                  color: Colors.yellow.withOpacity(0.4),
+                                  blurRadius: 8,
+                                  spreadRadius: 1,
+                                ),
+                              ]
+                            : null,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            icons[index],
+                            width: selected ? 24 : 22,
+                            height: selected ? 24 : 22,
+                            colorFilter: ColorFilter.mode(
+                              selected ? Colors.black : Colors.white70,
+                              BlendMode.srcIn,
+                            ),
+                            semanticsLabel: labels[index],
+                            placeholderBuilder: (context) => Icon(
+                              Icons.circle,
+                              size: selected ? 22 : 20,
+                              color: selected ? Colors.black : Colors.white70,
+                            ),
                           ),
-                          semanticsLabel: labels[index],
-                          placeholderBuilder: (context) => Icon(
-                            Icons.circle,
-                            size: 18,
-                            color: selected ? Colors.yellow : Colors.white70,
+                          const SizedBox(height: 4),
+                          Text(
+                            labels[index],
+                            style: TextStyle(
+                              fontSize: selected ? 11 : 10,
+                              fontWeight: selected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: selected ? Colors.black : Colors.white70,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          labels[index],
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: selected ? Colors.yellow : Colors.white70,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );

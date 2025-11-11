@@ -103,7 +103,20 @@ class _StandingsScreenState extends State<StandingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Klasemen Liga Inggris'),
+        title: const Text(
+          'Klasemen Liga Inggris',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         actions: [
           IconButton(
             tooltip: 'Debug API',
@@ -112,84 +125,194 @@ class _StandingsScreenState extends State<StandingsScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _filterStandings,
-              decoration: InputDecoration(
-                hintText: 'Cari tim...',
-                prefixIcon: const Icon(Icons.search, color: Colors.yellow),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          _filterStandings('');
-                        },
-                      )
-                    : null,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.yellow),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.yellow, width: 2),
-                ),
-                filled: true,
-                fillColor: Colors.grey[900],
-              ),
-              style: const TextStyle(color: Colors.white),
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.grey[900]!, Colors.black],
           ),
-          Expanded(
-            child: FutureBuilder<List<StandingModel>>(
-              future: _standingsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        'Error: ${snapshot.error}. Cek koneksi atau API Key Anda.',
-                        textAlign: TextAlign.center,
+        ),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.grey[850]!, Colors.grey[900]!],
+                ),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.yellow.withOpacity(0.3),
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.yellow.withOpacity(0.1),
+                    blurRadius: 15,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _filterStandings,
+                decoration: InputDecoration(
+                  hintText: 'Cari tim favorit Anda...',
+                  hintStyle: TextStyle(color: Colors.white38),
+                  prefixIcon: Container(
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
                       ),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  );
-                } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  if (_searchController.text.isNotEmpty &&
-                      _filteredStandings.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Tim tidak ditemukan',
-                        style: TextStyle(fontSize: 16),
+                    child: const Icon(Icons.search, color: Colors.black),
+                  ),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear, color: Colors.yellow),
+                          onPressed: () {
+                            _searchController.clear();
+                            _filterStandings('');
+                          },
+                        )
+                      : null,
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                ),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Expanded(
+              child: FutureBuilder<List<StandingModel>>(
+                future: _standingsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.yellow,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            'Memuat klasemen...',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.red, width: 2),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 50,
+                            ),
+                            const SizedBox(height: 15),
+                            Text(
+                              'Error: ${snapshot.error}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Cek koneksi atau API Key Anda.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white70),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    if (_searchController.text.isNotEmpty &&
+                        _filteredStandings.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off,
+                              size: 80,
+                              color: Colors.white30,
+                            ),
+                            const SizedBox(height: 20),
+                            const Text(
+                              'Tim tidak ditemukan',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: SingleChildScrollView(
+                          child: _buildStandingsTable(_filteredStandings),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.table_chart,
+                            size: 80,
+                            color: Colors.white30,
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            'Tidak ada data klasemen',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      child: _buildStandingsTable(_filteredStandings),
-                    ),
-                  );
-                } else {
-                  return const Center(
-                    child: Text('Tidak ada data klasemen yang tersedia.'),
-                  );
-                }
-              },
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -197,71 +320,104 @@ class _StandingsScreenState extends State<StandingsScreen> {
   Widget _buildStandingsTable(List<StandingModel> standings) {
     final columns = ['#', 'Tim', 'P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts'];
 
-    return DataTable(
-      columnSpacing: 12.0,
-      headingRowHeight: 40,
-      dataRowMinHeight: 50,
-      dataRowMaxHeight: 50,
-      columns: columns
-          .map(
-            (label) => DataColumn(
-              label: Text(
-                label,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
-              ),
-              tooltip: label,
+    return Container(
+      margin: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.grey[850]!, Colors.grey[900]!],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.yellow.withOpacity(0.3), width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: DataTable(
+          columnSpacing: 12.0,
+          headingRowHeight: 50,
+          dataRowMinHeight: 55,
+          dataRowMaxHeight: 55,
+          headingRowColor: WidgetStateProperty.all(
+            Colors.yellow.withOpacity(0.2),
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.grey[850]!, Colors.grey[900]!],
             ),
-          )
-          .toList(),
-
-      rows: standings
-          .map(
-            (s) => DataRow(
-              cells: [
-                DataCell(Text(s.rank.toString())),
-                DataCell(
-                  Row(
-                    children: [
-                      Image.network(
-                        s.teamLogo,
-                        width: 24,
-                        errorBuilder: (c, o, t) =>
-                            const Icon(Icons.shield, size: 24),
+          ),
+          columns: columns
+              .map(
+                (label) => DataColumn(
+                  label: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Text(
+                      label,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.yellow,
+                        letterSpacing: 0.5,
                       ),
-                      const SizedBox(width: 8),
-                      SizedBox(
-                        width: 100,
-                        child: Text(
-                          s.teamName,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                DataCell(Text(s.played.toString())),
-                DataCell(Text(s.win.toString())),
-                DataCell(Text(s.draw.toString())),
-                DataCell(Text(s.lose.toString())),
-                DataCell(Text(s.goalsFor.toString())),
-                DataCell(Text(s.goalsAgainst.toString())),
-                DataCell(Text(s.goalsDiff.toString())),
-                DataCell(
-                  Text(
-                    s.points.toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w900,
-                      color: Colors.yellowAccent,
                     ),
                   ),
+                  tooltip: label,
                 ),
-              ],
-            ),
-          )
-          .toList(),
+              )
+              .toList(),
+
+          rows: standings
+              .map(
+                (s) => DataRow(
+                  cells: [
+                    DataCell(Text(s.rank.toString())),
+                    DataCell(
+                      Row(
+                        children: [
+                          Image.network(
+                            s.teamLogo,
+                            width: 24,
+                            errorBuilder: (c, o, t) =>
+                                const Icon(Icons.shield, size: 24),
+                          ),
+                          const SizedBox(width: 8),
+                          SizedBox(
+                            width: 100,
+                            child: Text(
+                              s.teamName,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    DataCell(Text(s.played.toString())),
+                    DataCell(Text(s.win.toString())),
+                    DataCell(Text(s.draw.toString())),
+                    DataCell(Text(s.lose.toString())),
+                    DataCell(Text(s.goalsFor.toString())),
+                    DataCell(Text(s.goalsAgainst.toString())),
+                    DataCell(Text(s.goalsDiff.toString())),
+                    DataCell(
+                      Text(
+                        s.points.toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: Colors.yellowAccent,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        ),
+      ),
     );
   }
 }
