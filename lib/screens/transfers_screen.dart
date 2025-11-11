@@ -61,187 +61,420 @@ class _TransfersScreenState extends State<TransfersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Transfer Pemain')),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const CurrencyConverterWidget(),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Transfer Pemain Terbaru',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+      appBar: AppBar(
+        title: const Text(
+          'Transfer Pemain',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _transferList.isEmpty
-                ? const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(30.0),
-                      child: Text(
-                        "Tidak ada data transfer yang ditemukan dari API.",
+          ),
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.grey[900]!, Colors.black],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const CurrencyConverterWidget(),
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 16,
+                ),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.yellow.withOpacity(0.3),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.swap_horiz, color: Colors.black, size: 24),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Transfer Pemain Terbaru',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
-                  )
-                : ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: _transferList.length,
-                    itemBuilder: (context, index) {
-                      final transfer = _transferList[index];
-                      String formattedDate = '';
-                      try {
-                        final date = DateTime.parse(transfer.transferDate);
-                        formattedDate =
-                            '${date.day.toString().padLeft(2, '0')} '
-                            '${_monthName(date.month)} '
-                            '${date.year}';
-                      } catch (_) {
-                        formattedDate = transfer.transferDate;
-                      }
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(14.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 38,
-                                    height: 38,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.person,
-                                      size: 24,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          transfer.playerName,
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          transfer.status,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.blue.shade700,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    formattedDate,
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
+                  ],
+                ),
+              ),
+              _isLoading
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(40.0),
+                        child: Column(
+                          children: [
+                            const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.yellow,
                               ),
-                              const SizedBox(height: 14),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    children: [
-                                      ClipOval(
-                                        child: Image.network(
-                                          transfer.outTeamLogo,
-                                          width: 36,
-                                          height: 36,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  const Icon(
-                                                    Icons.shield,
-                                                    size: 32,
-                                                    color: Colors.grey,
-                                                  ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      SizedBox(
-                                        width: 70,
-                                        child: Text(
-                                          transfer.fromClub,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 12),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 18),
-                                  const Icon(
-                                    Icons.arrow_forward,
-                                    size: 28,
-                                    color: Colors.amber,
-                                  ),
-                                  const SizedBox(width: 18),
-                                  Column(
-                                    children: [
-                                      ClipOval(
-                                        child: Image.network(
-                                          transfer.inTeamLogo,
-                                          width: 36,
-                                          height: 36,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  const Icon(
-                                                    Icons.shield,
-                                                    size: 32,
-                                                    color: Colors.grey,
-                                                  ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      SizedBox(
-                                        width: 70,
-                                        child: Text(
-                                          transfer.toClub,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 12),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              'Memuat data transfer...',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : _transferList.isEmpty
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.swap_horiz,
+                              size: 80,
+                              color: Colors.white30,
+                            ),
+                            const SizedBox(height: 20),
+                            const Text(
+                              "Tidak ada data transfer",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: _transferList.length,
+                      itemBuilder: (context, index) {
+                        final transfer = _transferList[index];
+                        String formattedDate = '';
+                        try {
+                          final date = DateTime.parse(transfer.transferDate);
+                          formattedDate =
+                              '${date.day.toString().padLeft(2, '0')} '
+                              '${_monthName(date.month)} '
+                              '${date.year}';
+                        } catch (_) {
+                          formattedDate = transfer.transferDate;
+                        }
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Colors.grey[850]!, Colors.grey[900]!],
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.1),
+                              width: 1,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                blurRadius: 10,
+                                offset: const Offset(0, 5),
                               ),
                             ],
                           ),
-                        ),
-                      );
-                    },
-                  ),
-          ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color(0xFFFFD700),
+                                            Color(0xFFFFA500),
+                                          ],
+                                        ),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.yellow.withOpacity(
+                                              0.4,
+                                            ),
+                                            blurRadius: 8,
+                                            spreadRadius: 2,
+                                          ),
+                                        ],
+                                      ),
+                                      child: const Icon(
+                                        Icons.person,
+                                        size: 28,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 14),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            transfer.playerName,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                              vertical: 4,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Colors.blue[700]!,
+                                                  Colors.blue[500]!,
+                                                ],
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Text(
+                                              transfer.status,
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 6,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: Colors.yellow.withOpacity(0.3),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.calendar_today,
+                                            size: 12,
+                                            color: Colors.yellow,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            formattedDate,
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                Container(
+                                  padding: const EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                      color: Colors.yellow.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                color: Colors.red.withOpacity(
+                                                  0.2,
+                                                ),
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: Colors.red,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: ClipOval(
+                                                child: Image.network(
+                                                  transfer.outTeamLogo,
+                                                  width: 40,
+                                                  height: 40,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder:
+                                                      (
+                                                        context,
+                                                        error,
+                                                        stackTrace,
+                                                      ) => const Icon(
+                                                        Icons.shield,
+                                                        size: 36,
+                                                        color: Colors.red,
+                                                      ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              transfer.fromClub,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white,
+                                              ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                        ),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xFFFFD700),
+                                                Color(0xFFFFA500),
+                                              ],
+                                            ),
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.yellow
+                                                    .withOpacity(0.5),
+                                                blurRadius: 10,
+                                                spreadRadius: 2,
+                                              ),
+                                            ],
+                                          ),
+                                          child: const Icon(
+                                            Icons.arrow_forward,
+                                            size: 24,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                color: Colors.green.withOpacity(
+                                                  0.2,
+                                                ),
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: Colors.green,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: ClipOval(
+                                                child: Image.network(
+                                                  transfer.inTeamLogo,
+                                                  width: 40,
+                                                  height: 40,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder:
+                                                      (
+                                                        context,
+                                                        error,
+                                                        stackTrace,
+                                                      ) => const Icon(
+                                                        Icons.shield,
+                                                        size: 36,
+                                                        color: Colors.green,
+                                                      ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              transfer.toClub,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white,
+                                              ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ],
+          ),
         ),
       ),
     );
