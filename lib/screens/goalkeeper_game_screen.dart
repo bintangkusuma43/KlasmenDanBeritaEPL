@@ -151,7 +151,7 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
                             : _score >= 5
                             ? Colors.green
                             : Colors.red)
-                        .withOpacity(0.5),
+                        .withValues(alpha: 0.5),
                 blurRadius: 30,
                 spreadRadius: 5,
               ),
@@ -190,7 +190,7 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
@@ -336,7 +336,7 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
       width: size,
       height: size * 0.6,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.3),
+        color: Colors.white.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(size),
       ),
     );
@@ -357,12 +357,12 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.5),
+            color: color.withValues(alpha: 0.5),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -491,15 +491,15 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Colors.black.withOpacity(0.7),
-                        Colors.black.withOpacity(0.5),
+                        Colors.black.withValues(alpha: 0.7),
+                        Colors.black.withValues(alpha: 0.5),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(color: Colors.yellow, width: 3),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.yellow.withOpacity(0.3),
+                        color: Colors.yellow.withValues(alpha: 0.3),
                         blurRadius: 20,
                         spreadRadius: 5,
                       ),
@@ -516,7 +516,7 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.yellow.withOpacity(0.5),
+                              color: Colors.yellow.withValues(alpha: 0.5),
                               blurRadius: 20,
                               spreadRadius: 5,
                             ),
@@ -544,7 +544,7 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
                       Container(
                         padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: const Column(
@@ -658,7 +658,7 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                         blurRadius: 15,
                         spreadRadius: 2,
                       ),
@@ -693,12 +693,12 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
                         border: Border.all(color: Colors.white, width: 4),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.orange.withOpacity(0.6),
+                            color: Colors.orange.withValues(alpha: 0.6),
                             blurRadius: 15,
                             spreadRadius: 3,
                           ),
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.4),
+                            color: Colors.black.withValues(alpha: 0.4),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -744,7 +744,7 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withValues(alpha: 0.3),
                             blurRadius: 5,
                             offset: const Offset(0, 3),
                           ),
@@ -838,7 +838,7 @@ class NetPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.3)
+      ..color = Colors.white.withValues(alpha: 0.3)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 

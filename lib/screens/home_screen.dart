@@ -98,14 +98,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         child: _isLoading
-            ? Center(
+            ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircularProgressIndicator(
+                    CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Text(
                       'Memuat berita terkini...',
                       style: TextStyle(color: Colors.white70, fontSize: 14),
@@ -114,13 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               )
             : _newsList.isEmpty
-            ? Center(
+            ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.newspaper, size: 80, color: Colors.white30),
-                    const SizedBox(height: 20),
-                    const Text(
+                    SizedBox(height: 20),
+                    Text(
                       'Tidak ada berita yang ditemukan',
                       style: TextStyle(color: Colors.white70, fontSize: 16),
                     ),
@@ -156,13 +156,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withValues(alpha: 0.5),
                                 blurRadius: 10,
                                 offset: const Offset(0, 5),
                               ),
                             ],
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.1),
+                              color: Colors.white.withValues(alpha: 0.1),
                               width: 1,
                             ),
                           ),
@@ -257,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         borderRadius: BorderRadius.circular(20),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.red.withOpacity(0.5),
+                                            color: Colors.red.withValues(alpha: 0.5),
                                             blurRadius: 8,
                                             spreadRadius: 1,
                                           ),
@@ -306,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.3),
+                                        color: Colors.black.withValues(alpha: 0.3),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Row(
@@ -337,7 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ),
                                           const SizedBox(width: 8),
-                                          Icon(
+                                          const Icon(
                                             Icons.access_time,
                                             size: 14,
                                             color: Colors.yellow,

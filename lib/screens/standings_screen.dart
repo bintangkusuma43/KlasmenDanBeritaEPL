@@ -45,20 +45,19 @@ class _StandingsScreenState extends State<StandingsScreen> {
   }
 
   Future<void> _showRawResponseDebug(BuildContext context) async {
-    final localContext = context;
-
     final resp = await _apiService.fetchStandingsRaw();
     if (!mounted) return;
 
     if (resp == null) {
+      if (!context.mounted) return;
       showDialog(
-        context: localContext,
+        context: context,
         builder: (_) => AlertDialog(
           title: const Text('Debug: Standings API'),
           content: const Text('Gagal memanggil API. Cek log.'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(localContext),
+              onPressed: () => Navigator.pop(context),
               child: const Text('Tutup'),
             ),
           ],
@@ -74,8 +73,9 @@ class _StandingsScreenState extends State<StandingsScreen> {
         ? body
         : const JsonEncoder.withIndent('  ').convert(body);
 
+    if (!context.mounted) return;
     showDialog(
-      context: localContext,
+      context: context,
       builder: (_) => AlertDialog(
         title: Text('Debug: Standings API (status: $status)'),
         content: SizedBox(
@@ -84,7 +84,7 @@ class _StandingsScreenState extends State<StandingsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(localContext),
+            onPressed: () => Navigator.pop(context),
             child: const Text('Tutup'),
           ),
         ],
@@ -144,12 +144,12 @@ class _StandingsScreenState extends State<StandingsScreen> {
                 ),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: Colors.yellow.withOpacity(0.3),
+                  color: Colors.yellow.withValues(alpha: 0.3),
                   width: 2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.yellow.withOpacity(0.1),
+                    color: Colors.yellow.withValues(alpha: 0.1),
                     blurRadius: 15,
                     spreadRadius: 1,
                   ),
@@ -160,7 +160,7 @@ class _StandingsScreenState extends State<StandingsScreen> {
                 onChanged: _filterStandings,
                 decoration: InputDecoration(
                   hintText: 'Cari tim favorit Anda...',
-                  hintStyle: TextStyle(color: Colors.white38),
+                  hintStyle: const TextStyle(color: Colors.white38),
                   prefixIcon: Container(
                     margin: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -198,16 +198,16 @@ class _StandingsScreenState extends State<StandingsScreen> {
                 future: _standingsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const CircularProgressIndicator(
+                          CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
                               Colors.yellow,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           Text(
                             'Memuat klasemen...',
                             style: TextStyle(
@@ -224,7 +224,7 @@ class _StandingsScreenState extends State<StandingsScreen> {
                         margin: const EdgeInsets.all(20),
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1),
+                          color: Colors.red.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(color: Colors.red, width: 2),
                         ),
@@ -255,7 +255,7 @@ class _StandingsScreenState extends State<StandingsScreen> {
                   } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     if (_searchController.text.isNotEmpty &&
                         _filteredStandings.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -264,8 +264,8 @@ class _StandingsScreenState extends State<StandingsScreen> {
                               size: 80,
                               color: Colors.white30,
                             ),
-                            const SizedBox(height: 20),
-                            const Text(
+                            SizedBox(height: 20),
+                            Text(
                               'Tim tidak ditemukan',
                               style: TextStyle(
                                 fontSize: 18,
@@ -286,7 +286,7 @@ class _StandingsScreenState extends State<StandingsScreen> {
                       ),
                     );
                   } else {
-                    return Center(
+                    return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -295,8 +295,8 @@ class _StandingsScreenState extends State<StandingsScreen> {
                             size: 80,
                             color: Colors.white30,
                           ),
-                          const SizedBox(height: 20),
-                          const Text(
+                          SizedBox(height: 20),
+                          Text(
                             'Tidak ada data klasemen',
                             style: TextStyle(
                               fontSize: 16,
@@ -326,10 +326,13 @@ class _StandingsScreenState extends State<StandingsScreen> {
           colors: [Colors.grey[850]!, Colors.grey[900]!],
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.yellow.withOpacity(0.3), width: 2),
+        border: Border.all(
+          color: Colors.yellow.withValues(alpha: 0.3),
+          width: 2,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -343,7 +346,7 @@ class _StandingsScreenState extends State<StandingsScreen> {
           dataRowMinHeight: 55,
           dataRowMaxHeight: 55,
           headingRowColor: WidgetStateProperty.all(
-            Colors.yellow.withOpacity(0.2),
+            Colors.yellow.withValues(alpha: 0.2),
           ),
           decoration: BoxDecoration(
             gradient: LinearGradient(

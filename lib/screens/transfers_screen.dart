@@ -103,20 +103,20 @@ class _TransfersScreenState extends State<TransfersScreen> {
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.yellow.withOpacity(0.3),
+                      color: Colors.yellow.withValues(alpha: 0.3),
                       blurRadius: 10,
                       spreadRadius: 2,
                     ),
                   ],
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.swap_horiz, color: Colors.black, size: 24),
-                    const SizedBox(width: 10),
+                    Icon(Icons.swap_horiz, color: Colors.black, size: 24),
+                    SizedBox(width: 10),
                     Text(
                       'Transfer Pemain Terbaru',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -126,17 +126,17 @@ class _TransfersScreenState extends State<TransfersScreen> {
                 ),
               ),
               _isLoading
-                  ? Center(
+                  ? const Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(40.0),
+                        padding: EdgeInsets.all(40.0),
                         child: Column(
                           children: [
-                            const CircularProgressIndicator(
+                            CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Colors.yellow,
                               ),
                             ),
-                            const SizedBox(height: 20),
+                            SizedBox(height: 20),
                             Text(
                               'Memuat data transfer...',
                               style: TextStyle(
@@ -149,9 +149,9 @@ class _TransfersScreenState extends State<TransfersScreen> {
                       ),
                     )
                   : _transferList.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(30.0),
+                        padding: EdgeInsets.all(30.0),
                         child: Column(
                           children: [
                             Icon(
@@ -159,8 +159,8 @@ class _TransfersScreenState extends State<TransfersScreen> {
                               size: 80,
                               color: Colors.white30,
                             ),
-                            const SizedBox(height: 20),
-                            const Text(
+                            SizedBox(height: 20),
+                            Text(
                               "Tidak ada data transfer",
                               style: TextStyle(
                                 color: Colors.white70,
@@ -201,12 +201,12 @@ class _TransfersScreenState extends State<TransfersScreen> {
                             ),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.1),
+                              color: Colors.white.withValues(alpha: 0.1),
                               width: 1,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withValues(alpha: 0.5),
                                 blurRadius: 10,
                                 offset: const Offset(0, 5),
                               ),
@@ -233,8 +233,8 @@ class _TransfersScreenState extends State<TransfersScreen> {
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.yellow.withOpacity(
-                                              0.4,
+                                            color: Colors.yellow.withValues(
+                                              alpha: 0.4,
                                             ),
                                             blurRadius: 8,
                                             spreadRadius: 2,
@@ -295,17 +295,21 @@ class _TransfersScreenState extends State<TransfersScreen> {
                                         vertical: 6,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.3),
+                                        color: Colors.black.withValues(
+                                          alpha: 0.3,
+                                        ),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: Colors.yellow.withOpacity(0.3),
+                                          color: Colors.yellow.withValues(
+                                            alpha: 0.3,
+                                          ),
                                           width: 1,
                                         ),
                                       ),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.calendar_today,
                                             size: 12,
                                             color: Colors.yellow,
@@ -328,10 +332,12 @@ class _TransfersScreenState extends State<TransfersScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(14),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.3),
+                                    color: Colors.black.withValues(alpha: 0.3),
                                     borderRadius: BorderRadius.circular(15),
                                     border: Border.all(
-                                      color: Colors.yellow.withOpacity(0.2),
+                                      color: Colors.yellow.withValues(
+                                        alpha: 0.2,
+                                      ),
                                       width: 1,
                                     ),
                                   ),
@@ -344,8 +350,8 @@ class _TransfersScreenState extends State<TransfersScreen> {
                                             Container(
                                               padding: const EdgeInsets.all(8),
                                               decoration: BoxDecoration(
-                                                color: Colors.red.withOpacity(
-                                                  0.2,
+                                                color: Colors.red.withValues(
+                                                  alpha: 0.2,
                                                 ),
                                                 shape: BoxShape.circle,
                                                 border: Border.all(
@@ -403,8 +409,9 @@ class _TransfersScreenState extends State<TransfersScreen> {
                                             shape: BoxShape.circle,
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.yellow
-                                                    .withOpacity(0.5),
+                                                color: Colors.yellow.withValues(
+                                                  alpha: 0.5,
+                                                ),
                                                 blurRadius: 10,
                                                 spreadRadius: 2,
                                               ),
@@ -423,8 +430,8 @@ class _TransfersScreenState extends State<TransfersScreen> {
                                             Container(
                                               padding: const EdgeInsets.all(8),
                                               decoration: BoxDecoration(
-                                                color: Colors.green.withOpacity(
-                                                  0.2,
+                                                color: Colors.green.withValues(
+                                                  alpha: 0.2,
                                                 ),
                                                 shape: BoxShape.circle,
                                                 border: Border.all(

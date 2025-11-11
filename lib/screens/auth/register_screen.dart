@@ -222,7 +222,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         color: Colors.yellow,
                       ),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withValues(alpha: 0.1),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(
@@ -265,7 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       labelStyle: const TextStyle(color: Colors.white70),
                       prefixIcon: const Icon(Icons.email, color: Colors.yellow),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withValues(alpha: 0.1),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(
@@ -311,7 +311,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       labelStyle: const TextStyle(color: Colors.white70),
                       prefixIcon: const Icon(Icons.lock, color: Colors.yellow),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withValues(alpha: 0.1),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(
@@ -360,7 +360,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         color: Colors.yellow,
                       ),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withValues(alpha: 0.1),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(
@@ -416,7 +416,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.yellow.withOpacity(0.2),
+                          color: Colors.yellow.withValues(alpha: 0.2),
                           blurRadius: 8,
                           offset: const Offset(0, 3),
                         ),
@@ -485,7 +485,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.yellow.withOpacity(0.3),
+                                color: Colors.yellow.withValues(alpha: 0.3),
                                 blurRadius: 8,
                                 offset: const Offset(0, 3),
                               ),
@@ -532,7 +532,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.yellow.withOpacity(0.5),
+                          color: Colors.yellow.withValues(alpha: 0.5),
                           blurRadius: 15,
                           offset: const Offset(0, 5),
                         ),

@@ -45,7 +45,7 @@ class _MainWrapperState extends State<MainWrapper> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, -5),
             ),
@@ -96,7 +96,7 @@ class _MainWrapperState extends State<MainWrapper> {
                         boxShadow: selected
                             ? [
                                 BoxShadow(
-                                  color: Colors.yellow.withOpacity(0.4),
+                                  color: Colors.yellow.withValues(alpha: 0.4),
                                   blurRadius: 8,
                                   spreadRadius: 1,
                                 ),

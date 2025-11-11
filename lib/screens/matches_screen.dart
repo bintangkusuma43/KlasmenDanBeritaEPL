@@ -137,14 +137,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
           ),
         ),
         child: _isLoading
-            ? Center(
+            ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircularProgressIndicator(
+                    CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Text(
                       'Memuat jadwal pertandingan...',
                       style: TextStyle(color: Colors.white70, fontSize: 14),
@@ -174,12 +174,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withValues(alpha: 0.1),
                         width: 1,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withValues(alpha: 0.5),
                           blurRadius: 10,
                           offset: const Offset(0, 5),
                         ),
@@ -225,10 +225,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withValues(alpha: 0.3),
                               borderRadius: BorderRadius.circular(15),
                               border: Border.all(
-                                color: Colors.yellow.withOpacity(0.3),
+                                color: Colors.yellow.withValues(alpha: 0.3),
                                 width: 1,
                               ),
                             ),
@@ -261,7 +261,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.yellow.withOpacity(0.4),
+                                        color: Colors.yellow.withValues(alpha: 0.4),
                                         blurRadius: 8,
                                         spreadRadius: 1,
                                       ),
@@ -297,13 +297,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  Colors.blue[900]!.withOpacity(0.3),
-                                  Colors.purple[900]!.withOpacity(0.3),
+                                  Colors.blue[900]!.withValues(alpha: 0.3),
+                                  Colors.purple[900]!.withValues(alpha: 0.3),
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: Colors.blue.withOpacity(0.3),
+                                color: Colors.blue.withValues(alpha: 0.3),
                                 width: 1,
                               ),
                             ),
@@ -332,7 +332,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.3),
+                                    color: Colors.black.withValues(alpha: 0.3),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(

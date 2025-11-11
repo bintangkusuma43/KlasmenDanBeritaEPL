@@ -166,16 +166,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         child: SafeArea(
           child: _currentUser == null
-              ? Center(
+              ? const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const CircularProgressIndicator(
+                      CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
                           Colors.yellow,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       Text(
                         'Memuat profil...',
                         style: TextStyle(color: Colors.white70, fontSize: 14),
@@ -323,7 +323,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 borderRadius: BorderRadius.circular(15),
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.1),
+                                  color: Colors.white.withValues(alpha: 0.1),
                                   width: 1,
                                 ),
                               ),
@@ -363,7 +363,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.yellow.withOpacity(0.3),
+                                          color: Colors.yellow.withValues(alpha: 0.3),
                                           blurRadius: 8,
                                           spreadRadius: 2,
                                         ),
@@ -411,7 +411,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       borderRadius: BorderRadius.circular(15),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.green.withOpacity(0.4),
+                                          color: Colors.green.withValues(alpha: 0.4),
                                           blurRadius: 12,
                                           offset: const Offset(0, 4),
                                         ),
@@ -468,7 +468,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       borderRadius: BorderRadius.circular(15),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.yellow.withOpacity(0.4),
+                                          color: Colors.yellow.withValues(alpha: 0.4),
                                           blurRadius: 12,
                                           offset: const Offset(0, 4),
                                         ),
@@ -520,7 +520,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 borderRadius: BorderRadius.circular(30),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.red.withOpacity(0.4),
+                                    color: Colors.red.withValues(alpha: 0.4),
                                     blurRadius: 12,
                                     offset: const Offset(0, 4),
                                   ),
