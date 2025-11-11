@@ -20,7 +20,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _feedbackController = TextEditingController();
 
   final HiveService _hiveService = HiveService();
 
@@ -142,9 +141,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         passwordHash: hashedPassword,
         favoriteTeam: _selectedTeam!,
         profilePhotoUrl: savedImagePath,
-        kesanSaran: _feedbackController.text.isNotEmpty
-            ? _feedbackController.text
-            : null,
+        kesanSaran: null,
       );
 
       try {
@@ -285,20 +282,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 30),
 
-              // Kesan dan Saran (textarea)
-              TextFormField(
-                controller: _feedbackController,
-                decoration: const InputDecoration(
-                  labelText:
-                      'Kesan & Saran untuk Mata Kuliah Pemrograman Aplikasi Mobile',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.multiline,
-                maxLines: 4,
-              ),
-              const SizedBox(height: 20),
-
-              // Tombol Daftar
               ElevatedButton(
                 onPressed: _register,
                 style: ElevatedButton.styleFrom(
