@@ -123,57 +123,286 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
-        title: const Text(
-          '🏆 GAME OVER 🏆',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Skor Akhir: $_score',
-              style: const TextStyle(fontSize: 24, color: Colors.white),
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(30),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.grey[900]!, Colors.grey[800]!],
             ),
-            const SizedBox(height: 10),
-            Text(
-              'Kebobolan: $_missed',
-              style: const TextStyle(fontSize: 18, color: Colors.red),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              _score >= 10
-                  ? 'Hebat! Kiper Premier League! 🥇'
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+              color: _score >= 10
+                  ? Colors.amber
                   : _score >= 5
-                  ? 'Bagus! Keep practicing! ⚽'
-                  : 'Coba lagi! 💪',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: Colors.white70),
+                  ? Colors.green
+                  : Colors.red,
+              width: 4,
             ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _startGame();
-            },
-            child: const Text(
-              'Main Lagi',
-              style: TextStyle(color: Colors.yellow, fontSize: 16),
-            ),
+            boxShadow: [
+              BoxShadow(
+                color:
+                    (_score >= 10
+                            ? Colors.amber
+                            : _score >= 5
+                            ? Colors.green
+                            : Colors.red)
+                        .withOpacity(0.5),
+                blurRadius: 30,
+                spreadRadius: 5,
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'Keluar',
-              style: TextStyle(color: Colors.grey, fontSize: 16),
-            ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                _score >= 10
+                    ? '🏆'
+                    : _score >= 5
+                    ? '⭐'
+                    : '💪',
+                style: const TextStyle(fontSize: 60),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'GAME OVER',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.yellow,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                  letterSpacing: 2,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black,
+                      blurRadius: 10,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.sports_score,
+                          color: Colors.green,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Saved: ',
+                          style: TextStyle(fontSize: 20, color: Colors.white70),
+                        ),
+                        Text(
+                          _score.toString(),
+                          style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.close, color: Colors.red, size: 30),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Missed: ',
+                          style: TextStyle(fontSize: 20, color: Colors.white70),
+                        ),
+                        Text(
+                          _missed.toString(),
+                          style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: _score >= 10
+                        ? [Colors.amber, Colors.orange]
+                        : _score >= 5
+                        ? [Colors.green, Colors.lightGreen]
+                        : [Colors.red, Colors.redAccent],
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Text(
+                  _score >= 10
+                      ? '🥇 HEBAT! KIPER PREMIER LEAGUE!'
+                      : _score >= 5
+                      ? '⚽ BAGUS! KEEP PRACTICING!'
+                      : '💪 COBA LAGI!',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _startGame();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        elevation: 5,
+                      ),
+                      icon: const Icon(Icons.refresh, color: Colors.black),
+                      label: const Text(
+                        'Main Lagi',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[700],
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        elevation: 5,
+                      ),
+                      icon: const Icon(Icons.exit_to_app, color: Colors.white),
+                      label: const Text(
+                        'Keluar',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCloud(double size) {
+    return Container(
+      width: size,
+      height: size * 0.6,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(size),
+      ),
+    );
+  }
+
+  Widget _buildScoreCard({
+    required IconData icon,
+    required String label,
+    required int value,
+    required Color color,
+    required Gradient gradient,
+    String? subtitle,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        gradient: gradient,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.5),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.white, size: 24),
+          const SizedBox(width: 8),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white70,
+                ),
+              ),
+              Row(
+                children: [
+                  Text(
+                    value.toString(),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  if (subtitle != null)
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70,
+                      ),
+                    ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
@@ -194,19 +423,34 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('⚽ Goalkeeper Challenge'),
+        title: const Text(
+          '⚽ Goalkeeper Challenge',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+        ),
+        centerTitle: true,
         backgroundColor: Colors.green[800],
+        elevation: 8,
+        shadowColor: Colors.black54,
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.blue[900]!, Colors.green[700]!],
+            colors: [Colors.blue[900]!, Colors.blue[700]!, Colors.green[700]!],
+            stops: const [0.0, 0.5, 1.0],
           ),
         ),
         child: Stack(
           children: [
+            // Clouds decoration
+            if (_gameStarted) ...[
+              Positioned(top: 100, left: 20, child: _buildCloud(60)),
+              Positioned(top: 150, right: 30, child: _buildCloud(80)),
+              Positioned(top: 250, left: 100, child: _buildCloud(50)),
+            ],
+
+            // Score cards
             Positioned(
               top: 20,
               left: 0,
@@ -214,41 +458,24 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      'Saved: $_score',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                  _buildScoreCard(
+                    icon: Icons.sports_score,
+                    label: 'Saved',
+                    value: _score,
+                    color: Colors.green,
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF2E7D32), Color(0xFF66BB6A)],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
+                  _buildScoreCard(
+                    icon: Icons.close,
+                    label: 'Missed',
+                    value: _missed,
+                    color: Colors.red,
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFC62828), Color(0xFFEF5350)],
                     ),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      'Missed: $_missed/5',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                    subtitle: '/5',
                   ),
                 ],
               ),
@@ -256,73 +483,189 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
 
             if (!_gameStarted)
               Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.sports_soccer,
-                      size: 100,
-                      color: Colors.white,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.all(30),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.black.withOpacity(0.7),
+                        Colors.black.withOpacity(0.5),
+                      ],
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Goalkeeper Challenge',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.yellow, width: 3),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.yellow.withOpacity(0.3),
+                        blurRadius: 20,
+                        spreadRadius: 5,
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Text(
-                        'Miringkan HP kiri-kanan untuk menggerakkan kiper!\n\nTangkap bola sebelum masuk gawang!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: _startGame,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.yellow,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 20,
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.yellow.withOpacity(0.5),
+                              blurRadius: 20,
+                              spreadRadius: 5,
+                            ),
+                          ],
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                        child: const Text('⚽', style: TextStyle(fontSize: 60)),
                       ),
-                      child: const Text(
-                        'MULAI GAME',
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Goalkeeper Challenge',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Colors.yellow,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 10,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.phone_android,
+                                  color: Colors.yellow,
+                                  size: 24,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Miringkan HP kiri-kanan',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'untuk menggerakkan kiper!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white70,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Divider(color: Colors.yellow, thickness: 2),
+                            SizedBox(height: 10),
+                            Text(
+                              '🥅 Tangkap bola sebelum masuk gawang!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              '⚠️ Game Over jika kebobolan 5 kali!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: _startGame,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.yellow,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 50,
+                            vertical: 20,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          elevation: 10,
+                          shadowColor: Colors.yellow,
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.play_arrow,
+                              color: Colors.black,
+                              size: 30,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'MULAI GAME',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
             if (_gameStarted)
               Positioned(
-                left: size.width / 2 + _ballX - 20,
+                left: size.width / 2 + _ballX - 25,
                 top: size.height * 0.1 + (size.height * 0.7 * (_ballY + 1) / 2),
                 child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: const BoxDecoration(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: RadialGradient(
+                    gradient: const RadialGradient(
                       colors: [Colors.white, Colors.black87],
+                      stops: [0.3, 1.0],
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        blurRadius: 15,
+                        spreadRadius: 2,
+                      ),
+                    ],
                   ),
                   child: const Center(
-                    child: Text('⚽', style: TextStyle(fontSize: 30)),
+                    child: Text('⚽', style: TextStyle(fontSize: 35)),
                   ),
                 ),
               ),
@@ -330,37 +673,90 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
             if (_gameStarted)
               Positioned(
                 bottom: 50,
-                left: size.width / 2 + _keeperX - 40,
+                left: size.width / 2 + _keeperX - 45,
                 child: Column(
                   children: [
                     Container(
-                      width: 80,
-                      height: 100,
+                      width: 90,
+                      height: 110,
                       decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.white, width: 3),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFFFF6F00),
+                            Color(0xFFFF8F00),
+                            Color(0xFFFFA726),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.white, width: 4),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.orange.withOpacity(0.6),
+                            blurRadius: 15,
+                            spreadRadius: 3,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.4),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
                       ),
-                      child: const Center(
-                        child: Text('🧤', style: TextStyle(fontSize: 50)),
+                      child: Stack(
+                        children: [
+                          const Center(
+                            child: Text('🧤', style: TextStyle(fontSize: 55)),
+                          ),
+                          Positioned(
+                            top: 5,
+                            right: 5,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Text(
+                                '1',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
+                        horizontal: 12,
+                        vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
+                        gradient: const LinearGradient(
+                          colors: [Colors.white, Colors.grey],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
                       child: const Text(
                         'KIPER',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
+                          letterSpacing: 1.5,
                         ),
                       ),
                     ),
@@ -368,30 +764,66 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
                 ),
               ),
 
+            // Goal post
+            if (_gameStarted)
+              Positioned(
+                bottom: 130,
+                left: size.width / 2 - 120,
+                child: Container(
+                  width: 240,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 6),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    ),
+                  ),
+                  child: CustomPaint(painter: NetPainter()),
+                ),
+              ),
+
+            // Field lines
             if (_gameStarted)
               Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 40,
+                  height: 50,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.green[900]!, Colors.green[600]!],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.green[800]!, Colors.green[900]!],
                     ),
                   ),
-                  child: Row(
-                    children: List.generate(
-                      10,
-                      (index) => Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.all(2),
-                          color: index % 2 == 0
-                              ? Colors.green[800]
-                              : Colors.green[700],
+                  child: Stack(
+                    children: [
+                      // Striped pattern
+                      Row(
+                        children: List.generate(
+                          20,
+                          (index) => Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.all(1),
+                              decoration: BoxDecoration(
+                                color: index % 2 == 0
+                                    ? Colors.green[700]
+                                    : Colors.green[800],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      // White line
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(height: 4, color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -400,4 +832,29 @@ class _GoalkeeperGameScreenState extends State<GoalkeeperGameScreen> {
       ),
     );
   }
+}
+
+class NetPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withOpacity(0.3)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    const double spacing = 15;
+
+    // Vertical lines
+    for (double x = 0; x <= size.width; x += spacing) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
+    }
+
+    // Horizontal lines
+    for (double y = 0; y <= size.height; y += spacing) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
