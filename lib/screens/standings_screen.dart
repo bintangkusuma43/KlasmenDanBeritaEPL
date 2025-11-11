@@ -278,6 +278,8 @@ class _StandingsScreenState extends State<StandingsScreen> {
                       );
                     }
                     return SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 100),
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: _buildStandingsTable(_filteredStandings),
